@@ -1,15 +1,16 @@
+/*
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import TopTabNavigator from './TabNavigator';
 
-/*
+
 import MonthlyPayment from '../Components/MonthlyPayment';
 import InterestRate from '../Components/InterestRate';
 import Term from '../Components/Term';
 import Loan from '../Components/Loan';
 import Record from '../Components/Record';
-*/
+
 const Stack = createStackNavigator();
 
 const screenOptionStyle = {
@@ -48,5 +49,6 @@ const MainStackNavigator = () => {
     </Stack.Navigator>
   );
 };
-*/
+
 export default MainStackNavigator;
+*/

@@ -1,5 +1,5 @@
 // Store/Reducers/backupReducer.js
-
+/*
 const initialState = {backupSimulation: [], numberOfSimulation: 0};
 
 function record(state = initialState, action) {
@@ -21,3 +21,4 @@ function record(state = initialState, action) {
   }
 }
 export default record;
+*/

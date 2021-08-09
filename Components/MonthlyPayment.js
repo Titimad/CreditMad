@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import {StyleSheet, View, TextInput, Button, Text} from 'react-native';
 import numeral from 'numeral';
@@ -14,11 +15,11 @@ const screenWidth = Dimensions.get('window').width;
 const chartConfig = {
   color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
 };
-/*
+
 const mapStateToProps = state => {
   return state;
 };
-*/
+
 class MonthlyPayment extends React.Component {
   constructor(props) {
     super(props);
@@ -159,11 +160,11 @@ class MonthlyPayment extends React.Component {
       this.term = this.props.updatedParametersSimulation.Term;
       this.interestRate =
         this.props.updatedParametersSimulation.InterestRate / 100;
-      /*this.monthlyPayment =
+      this.monthlyPayment =
         this.props.updatedParametersSimulation.MonthlyPayment;
       this.totalPayments = this.props.updatedParametersSimulation.TotalPayment;
       this.totalInterest = this.props.updatedParametersSimulation.TotalInterest;
-*/
+
       const actionB = {
         type: 'RESET_LOADED_PARAMETER',
         value: 0,
@@ -377,3 +378,4 @@ const styles = StyleSheet.create({
 });
 //export default connect(mapStateToProps)(MonthlyPayment);
 export default MonthlyPayment;
+*/

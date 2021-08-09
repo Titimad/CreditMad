@@ -1,3 +1,4 @@
+/*
 import 'react-native-gesture-handler';
 import React from 'react';
 
@@ -24,3 +25,4 @@ export default class App extends React.Component {
     );
   }
 }
+*/

@@ -1,5 +1,5 @@
 // Store/Reducers/rootReducer.js
-
+/*
 const rootReducer = (state, action) => {
   if (action.type === RESET_STATE_APP) {
     // for all keys defined in your persistConfig(s)
@@ -10,3 +10,4 @@ const rootReducer = (state, action) => {
   }
   return appReducer(state, action);
 };
+*/

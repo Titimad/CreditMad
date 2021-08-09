@@ -1,3 +1,4 @@
+/*
 export default data = [
   {
     Type: 'MonthlyPayment_1',
@@ -27,3 +28,4 @@ export default data = [
     TotalInterest: 2.17,
   },
 ];
+*/
