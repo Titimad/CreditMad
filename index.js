@@ -5,4 +5,4 @@ import 'react-native-gesture-handler';
 import {AppRegistry} from 'react-native';
 import App from './App';
 
-AppRegistry.registerComponent('Credit001', () => App);
+AppRegistry.registerComponent('CreditMad', () => App);

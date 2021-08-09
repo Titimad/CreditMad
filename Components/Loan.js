@@ -1,3 +1,4 @@
+/*
 import React from "react";
 import { StyleSheet, View, TextInput, Button, Text } from "react-native";
 import numeral from "numeral";
@@ -281,3 +282,4 @@ const styles = StyleSheet.create({
   },
 });
 export default MonthlyPayment;
+*/

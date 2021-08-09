@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import {StyleSheet, View, TextInput, Text, FlatList} from 'react-native';
 import {connect} from 'react-redux';
@@ -103,3 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 export default connect(mapStateToProps)(Record);
+*/

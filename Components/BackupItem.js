@@ -1,5 +1,5 @@
 // Components/FilmItem.js
-
+/*
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import MonthlyPayment from './MonthlyPayment';
@@ -47,3 +47,4 @@ const styles = StyleSheet.create({
 });
 
 export default connect(mapStateToProps)(BackupItem);
+*/

@@ -5,7 +5,7 @@ import numeral from 'numeral';
 import {PieChart} from 'react-native-chart-kit';
 import {Dimensions} from 'react-native';
 
-import {connect} from 'react-redux';
+//import {connect} from 'react-redux';
 
 var interest = 0;
 var amount = 0;
@@ -14,11 +14,11 @@ const screenWidth = Dimensions.get('window').width;
 const chartConfig = {
   color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
 };
-
+/*
 const mapStateToProps = state => {
   return state;
 };
-
+*/
 class MonthlyPayment extends React.Component {
   constructor(props) {
     super(props);
@@ -375,4 +375,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
 });
-export default connect(mapStateToProps)(MonthlyPayment);
+//export default connect(mapStateToProps)(MonthlyPayment);
+export default MonthlyPayment;
