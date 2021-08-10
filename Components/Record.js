@@ -1,9 +1,8 @@
-/*
 import React from 'react';
 import {StyleSheet, View, TextInput, Text, FlatList} from 'react-native';
 import {connect} from 'react-redux';
 
-import backup from '../Helpers/backupData';
+import {backup} from '../Helpers/backupData';
 import BackupItem from './BackupItem';
 
 const mapStateToProps = state => {
@@ -104,4 +103,3 @@ const styles = StyleSheet.create({
   },
 });
 export default connect(mapStateToProps)(Record);
-*/

@@ -1,4 +1,3 @@
-/*
 import React from 'react';
 import {StyleSheet, View, TextInput, Button, Text} from 'react-native';
 import numeral from 'numeral';
@@ -6,7 +5,7 @@ import numeral from 'numeral';
 import {PieChart} from 'react-native-chart-kit';
 import {Dimensions} from 'react-native';
 
-//import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 
 var interest = 0;
 var amount = 0;
@@ -376,6 +375,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
 });
-//export default connect(mapStateToProps)(MonthlyPayment);
-export default MonthlyPayment;
-*/
+export default connect(mapStateToProps)(MonthlyPayment);

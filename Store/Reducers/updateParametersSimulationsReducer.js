@@ -1,5 +1,5 @@
 // Store/Reducers/updateParametersSimulationsReducer.js
-/*
+
 const initialState = {
   loadedParameter: 0,
   Type: 'Initial',
@@ -43,4 +43,3 @@ function updatedParametersSimulation(state = initialState, action) {
   }
 }
 export default updatedParametersSimulation;
-*/

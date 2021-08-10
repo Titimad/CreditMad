@@ -1,5 +1,5 @@
 // Store/configureStore.js
-/*
+
 import {createStore} from 'redux';
 import {persistCombineReducers} from 'redux-persist';
 import record from './Reducers/backupReducer';
@@ -20,4 +20,3 @@ export default createStore(
     appReducer,
   }),
 );
-*/
