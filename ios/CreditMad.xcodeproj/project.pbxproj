@@ -12,6 +12,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		3BDA675D26C59F88004EC751 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 3BDA675C26C59F88004EC751 /* Fonts */; };
 		4AFE73C362D49E0B5DAB094C /* libPods-CreditMad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6A4D8B516FD3AE729837ABF /* libPods-CreditMad.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -38,6 +39,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = CreditMad/main.m; sourceTree = "<group>"; };
 		2598321B2F4E324CC46FDC94 /* Pods-CreditMad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CreditMad.release.xcconfig"; path = "Target Support Files/Pods-CreditMad/Pods-CreditMad.release.xcconfig"; sourceTree = "<group>"; };
 		309870D124A24A5E8EF0D148 /* libPods-CreditMad-CreditMadTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CreditMad-CreditMadTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BDA675C26C59F88004EC751 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		68BC40FFF6D5CA51F585F8B9 /* Pods-CreditMad-CreditMadTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CreditMad-CreditMadTests.debug.xcconfig"; path = "Target Support Files/Pods-CreditMad-CreditMadTests/Pods-CreditMad-CreditMadTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = CreditMad/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B652D0E508944A02657319E7 /* Pods-CreditMad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CreditMad.debug.xcconfig"; path = "Target Support Files/Pods-CreditMad/Pods-CreditMad.debug.xcconfig"; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				3BDA675C26C59F88004EC751 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* CreditMad */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* CreditMadTests */,
@@ -145,7 +148,6 @@
 				68BC40FFF6D5CA51F585F8B9 /* Pods-CreditMad-CreditMadTests.debug.xcconfig */,
 				C17098DA6B71002DD821D2AB /* Pods-CreditMad-CreditMadTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -241,6 +243,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BDA675D26C59F88004EC751 /* Fonts in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

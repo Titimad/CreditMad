@@ -2,11 +2,11 @@
 
 import {createStore} from 'redux';
 import {persistCombineReducers} from 'redux-persist';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import record from './Reducers/backupReducer';
 import updatedParametersSimulation from './Reducers/updateParametersSimulationsReducer';
 import appReducer from './Reducers/rootReducer';
-
-import AsyncStorage from '@react-native-community/async-storage';
 
 const rootPersistConfig = {
   key: 'root',

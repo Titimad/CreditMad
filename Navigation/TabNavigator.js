@@ -1,15 +1,14 @@
-import 'react-native-gesture-handler';
 import React from 'react';
 
 import {connect} from 'react-redux';
 
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-/*
-import MaterialIcons from '@expo/vector-icons';
-import AntDesign from '@expo/vector-icons';
-import FontAwesome from '@expo/vector-icons';
-import MaterialCommunityIcons from '@expo/vector-icons';
-*/
+
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import MonthlyPayment from '../Components/MonthlyPayment';
 import InterestRate from '../Components/InterestRate';
 import Term from '../Components/Term';
@@ -27,25 +26,80 @@ const TopTabNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="Mensualité"
-      tabBarOptions={{
-        labelStyle: {
+      screenOptions={{
+        tabBarShowIcon: true,
+        tabBarScrollEnabled: true,
+        tabBarLabelStyle: {
           color: 'white',
           fontSize: 12,
           fontWeight: 'bold',
           fontFamily: 'Helvetica',
         },
-        scrollEnabled: true,
-        showIcon: false,
-        tabStyle: {width: 120},
-        style: {
+        tabBarItemStyle: {
+          width: 120,
+        },
+        tabBarStyle: {
           backgroundColor: 'dodgerblue',
         },
       }}>
-      <Tab.Screen name="Mensualité" component={MonthlyPayment} />
-      <Tab.Screen name="Taux d'intéret" component={InterestRate} />
-      <Tab.Screen name="Durée" component={Term} />
-      <Tab.Screen name="Montant" component={Loan} />
-      <Tab.Screen name="Sauvegarde" component={Record} />
+      <Tab.Screen
+        name="Mensualité"
+        component={MonthlyPayment}
+        options={{
+          tabBarLabel: 'Mensualité',
+          tabBarIcon: tabInfo => (
+            <AntDesign name="creditcard" size={24} color="white" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Taux d'intéret"
+        component={InterestRate}
+        options={{
+          tabBarLabel: "Taux d'intéret",
+          tabBarIcon: tabInfo => (
+            <MaterialCommunityIcons
+              name="shape-circle-plus"
+              size={24}
+              color="white"
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Durée"
+        component={Term}
+        options={{
+          tabBarLabel: 'Durée',
+          tabBarIcon: tabInfo => (
+            <AntDesign name="calendar" size={24} color="white" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Montant"
+        component={Loan}
+        options={{
+          tabBarLabel: 'Montant',
+          tabBarIcon: tabInfo => (
+            <FontAwesome name="dollar" size={24} color="white" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Sauvegarde"
+        component={Record}
+        options={{
+          tabBarLabel: 'Sauvegarde',
+          tabBarIcon: tabInfo => (
+            <MaterialCommunityIcons
+              name="record-circle-outline"
+              size={24}
+              color="white"
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
