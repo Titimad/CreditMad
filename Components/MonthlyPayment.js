@@ -3,6 +3,7 @@ import {StyleSheet, View, TextInput, Button, Text} from 'react-native';
 import numeral from 'numeral';
 
 import {PieChart} from 'react-native-chart-kit';
+
 import {Dimensions} from 'react-native';
 
 import {connect} from 'react-redux';
@@ -10,6 +11,24 @@ import {connect} from 'react-redux';
 var interest = 0;
 var amount = 0;
 
+var dataPieChart = [
+  {
+    name: 'Capital',
+    value: 0,
+    color: 'green',
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  },
+  {
+    name: 'Intérêts',
+    value: 0,
+    color: 'red',
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  },
+];
+
+//console.log('dataPieChart =' + dataPieChart);
 const screenWidth = Dimensions.get('window').width;
 const chartConfig = {
   color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
@@ -53,9 +72,11 @@ class MonthlyPayment extends React.Component {
   }
   _calculate() {
     console.log('Données avant calcul');
-    console.log(this.amount);
-    console.log(this.term);
-    console.log(this.interestRate);
+    console.log('this.amount = ' + this.amount);
+    console.log('this.term = ' + this.term);
+    console.log('this.interest = ' + this.interestRate);
+    console.log('dataPieChart amount =' + dataPieChart[0].value);
+    console.log('dataPieChart interest =' + dataPieChart[1].value);
 
     //Calcul seulement si la durée est saisie
     if (this.term != 0) {
@@ -87,17 +108,26 @@ class MonthlyPayment extends React.Component {
       console.log(this.monthlyPayment);
       console.log(this.totalPayments);
       console.log(this.totalInterest);
+      dataPieChart[1].value = this.totalInterest;
+      dataPieChart[0].value = this.amount;
+      console.log('dataPieChart amount =' + dataPieChart[0].value);
+      console.log('dataPieChart interest =' + dataPieChart[1].value);
       this.forceUpdate();
     } else {
       this.monthlyPayment = 0;
       this.totalPayments = 0;
       this.totalInterest = 0;
-      interest = this.totalInterest;
-      console.log('Var interest: ' + interest);
-      amount = this.amount;
-      console.log('Var amount: ' + amount);
+      dataPieChart[1].value = this.totalInterest;
+      dataPieChart[0].value = this.amount;
+      console.log('dataPieChart =' + dataPieChart);
       this.forceUpdate();
     }
+    console.log(
+      'dataPieChart amount à la fin de _calculate =' + dataPieChart[0].value,
+    );
+    console.log(
+      'dataPieChart interest à la fin de _calculate =' + dataPieChart[1].value,
+    );
   }
   _amountInputChanged(text) {
     //Remplacer la virgule par un point
@@ -106,6 +136,7 @@ class MonthlyPayment extends React.Component {
       text = text.replace(',', '.');
     }
     this.amount = text; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
+    dataPieChart[0].value = this.amount;
     this._calculate();
     console.log('Amount: ' + text);
   }
@@ -148,8 +179,14 @@ class MonthlyPayment extends React.Component {
     this.props.dispatch(action);
   }
   render() {
-    console.log('Props de MonthlyPayment dans le RENDER:');
-    console.log(this.props);
+    //  console.log('Props de MonthlyPayment dans le RENDER:');
+    //console.log(this.props);
+    //console.log('Var interest dans le RENDER =' + interest);
+    //console.log('Var amount dans le RENDER =' + amount);
+    console.log('dataPieChart amount dans le RENDER =' + dataPieChart[0].value);
+    console.log(
+      'dataPieChart interest dans le RENDER =' + dataPieChart[1].value,
+    );
     if (this.props.updatedParametersSimulation.loadedParameter == 1) {
       console.log('loadedParameter RENDER = 1');
       this.textInputAmount.clear();
@@ -292,28 +329,14 @@ class MonthlyPayment extends React.Component {
             justifyContent: 'space-between',
           }}>
           <PieChart
-            data={[
-              {
-                name: 'Intérêts',
-                value: this.totalInterest,
-                color: 'red',
-                legendFontColor: '#7F7F7F',
-                legendFontSize: 15,
-              },
-              {
-                name: 'Capital',
-                value: this.amount,
-                color: 'green',
-                legendFontColor: '#7F7F7F',
-                legendFontSize: 15,
-              },
-            ]}
+            data={dataPieChart}
             width={screenWidth}
             height={260}
             chartConfig={chartConfig}
             accessor="value"
             backgroundColor="white"
             paddingLeft="15"
+            absolute
             avoidFalseZero
           />
         </View>
