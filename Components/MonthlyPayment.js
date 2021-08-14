@@ -8,21 +8,21 @@ import {Dimensions} from 'react-native';
 
 import {connect} from 'react-redux';
 
-var interest = 0;
-var amount = 0;
+//var interest = 0;
+//var amount = 0;
 
 var dataPieChart = [
-  {
-    name: 'Capital',
-    value: 0,
-    color: 'green',
-    legendFontColor: '#7F7F7F',
-    legendFontSize: 15,
-  },
   {
     name: 'Intérêts',
     value: 0,
     color: 'red',
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  },
+  {
+    name: 'Capital',
+    value: 0,
+    color: 'green',
     legendFontColor: '#7F7F7F',
     legendFontSize: 15,
   },
@@ -41,23 +41,12 @@ const mapStateToProps = state => {
 class MonthlyPayment extends React.Component {
   constructor(props) {
     super(props);
-
-    console.log(
-      'Les props du Component MonthlyPayment avant test loadedParameter sont:',
-    );
-    console.log(this.props);
-
     this.amount = 0;
     this.term = 0;
     this.interestRate = 0;
     this.monthlyPayment = 0;
     this.totalPayments = 0;
     this.totalInterest = 0;
-
-    console.log(
-      'Les props du Component MonthlyPayment après test loadedParameter sont:',
-    );
-    console.log(this.props);
   }
 
   componentDidMount() {
@@ -71,13 +60,6 @@ class MonthlyPayment extends React.Component {
     console.log(this.props);
   }
   _calculate() {
-    console.log('Données avant calcul');
-    console.log('this.amount = ' + this.amount);
-    console.log('this.term = ' + this.term);
-    console.log('this.interest = ' + this.interestRate);
-    console.log('dataPieChart amount =' + dataPieChart[0].value);
-    console.log('dataPieChart interest =' + dataPieChart[1].value);
-
     //Calcul seulement si la durée est saisie
     if (this.term != 0) {
       //Calcul différent si le taux d'intérêt est nul
@@ -98,36 +80,18 @@ class MonthlyPayment extends React.Component {
         Math.round((this.totalPayments - this.amount) * 100) / 100;
       this.monthlyPayment = Math.round(this.monthlyPayment * 100) / 100;
       interest = this.totalInterest;
-      console.log('Var interest: ' + interest);
       amount = this.amount;
-      console.log('Var amount: ' + amount);
-      console.log('Données après calcul');
-      console.log(this.amount);
-      console.log(this.term);
-      console.log(this.interestRate);
-      console.log(this.monthlyPayment);
-      console.log(this.totalPayments);
-      console.log(this.totalInterest);
-      dataPieChart[1].value = this.totalInterest;
-      dataPieChart[0].value = this.amount;
-      console.log('dataPieChart amount =' + dataPieChart[0].value);
-      console.log('dataPieChart interest =' + dataPieChart[1].value);
+      dataPieChart[0].value = this.totalInterest;
+      dataPieChart[1].value = this.amount;
       this.forceUpdate();
     } else {
       this.monthlyPayment = 0;
       this.totalPayments = 0;
       this.totalInterest = 0;
-      dataPieChart[1].value = this.totalInterest;
-      dataPieChart[0].value = this.amount;
-      console.log('dataPieChart =' + dataPieChart);
+      dataPieChart[0].value = this.totalInterest;
+      dataPieChart[1].value = this.amount;
       this.forceUpdate();
     }
-    console.log(
-      'dataPieChart amount à la fin de _calculate =' + dataPieChart[0].value,
-    );
-    console.log(
-      'dataPieChart interest à la fin de _calculate =' + dataPieChart[1].value,
-    );
   }
   _amountInputChanged(text) {
     //Remplacer la virgule par un point
@@ -135,8 +99,8 @@ class MonthlyPayment extends React.Component {
     if (index !== -1) {
       text = text.replace(',', '.');
     }
-    this.amount = text; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
-    dataPieChart[0].value = this.amount;
+    this.amount = parseFloat(text); // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
+    dataPieChart[1].value = this.amount;
     this._calculate();
     console.log('Amount: ' + text);
   }
@@ -146,9 +110,8 @@ class MonthlyPayment extends React.Component {
     if (index !== -1) {
       text = text.replace(',', '.');
     }
-    this.term = text; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
+    this.term = parseFloat(text); // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
     this._calculate();
-    console.log('Durée: ' + text);
   }
   _interestRateInputChanged(text) {
     //Remplacer la virgule par un point
@@ -156,9 +119,8 @@ class MonthlyPayment extends React.Component {
     if (index !== -1) {
       text = text.replace(',', '.');
     }
-    this.interestRate = text / 100; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
+    this.interestRate = parseFloat(text) / 100; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
     this._calculate();
-    console.log("Taux d'intérêt: " + text);
   }
   _backup() {
     let nextNumberOfSimulation = this.props.record.numberOfSimulation + 1;
@@ -179,14 +141,6 @@ class MonthlyPayment extends React.Component {
     this.props.dispatch(action);
   }
   render() {
-    //  console.log('Props de MonthlyPayment dans le RENDER:');
-    //console.log(this.props);
-    //console.log('Var interest dans le RENDER =' + interest);
-    //console.log('Var amount dans le RENDER =' + amount);
-    console.log('dataPieChart amount dans le RENDER =' + dataPieChart[0].value);
-    console.log(
-      'dataPieChart interest dans le RENDER =' + dataPieChart[1].value,
-    );
     if (this.props.updatedParametersSimulation.loadedParameter == 1) {
       console.log('loadedParameter RENDER = 1');
       this.textInputAmount.clear();
@@ -336,7 +290,6 @@ class MonthlyPayment extends React.Component {
             accessor="value"
             backgroundColor="white"
             paddingLeft="15"
-            absolute
             avoidFalseZero
           />
         </View>
