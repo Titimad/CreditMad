@@ -15,6 +15,7 @@ import Term from '../Components/Term';
 import Loan from '../Components/Loan';
 import Record from '../Components/Record';
 import Amount from '../Components/Amount';
+import Basic from '../Components/SwipeList';
 
 const mapStateToProps = state => {
   return state;
@@ -41,6 +42,7 @@ const TopTabNavigator = () => {
         tabBarStyle: {
           backgroundColor: 'dodgerblue',
         },
+        swipeEnabled: false,
       }}>
       <Tab.Screen
         name="Mensualité"
@@ -68,7 +70,7 @@ const TopTabNavigator = () => {
       />
       <Tab.Screen
         name="Durée"
-        component={Term}
+        component={Basic}
         options={{
           tabBarLabel: 'Durée',
           tabBarIcon: tabInfo => (

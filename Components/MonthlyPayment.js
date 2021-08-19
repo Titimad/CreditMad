@@ -8,9 +8,6 @@ import {Dimensions} from 'react-native';
 
 import {connect} from 'react-redux';
 
-//var interest = 0;
-//var amount = 0;
-
 var dataPieChart = [
   {
     name: 'Intérêts',
@@ -28,7 +25,6 @@ var dataPieChart = [
   },
 ];
 
-//console.log('dataPieChart =' + dataPieChart);
 const screenWidth = Dimensions.get('window').width;
 const chartConfig = {
   color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
@@ -123,15 +119,16 @@ class MonthlyPayment extends React.Component {
     this._calculate();
   }
   _backup() {
-    let nextNumberOfSimulation = this.props.record.numberOfSimulation + 1;
-    let nameOfSimulation = 'Mensualité ' + nextNumberOfSimulation;
+    let nextIdSimulation = this.props.record.numberOfSimulation;
+    let idSimulation = '' + nextIdSimulation;
     const action = {
       type: 'BACKUP_SIMULATION',
       value: {
-        Type: nameOfSimulation,
+        key: idSimulation,
+        Type: 'Mensualité',
         Amount: this.amount,
         Term: this.term,
-        InterestRate: this.interestRate,
+        InterestRate: this.interestRate * 100,
         MonthlyPayment: this.monthlyPayment,
         TotalPayment: this.totalPayments,
         TotalInterest: this.totalInterest,
@@ -276,7 +273,7 @@ class MonthlyPayment extends React.Component {
         </View>
         <View
           style={{
-            flex: 4,
+            flex: 8,
             paddingVertical: 0,
             flexDirection: 'row',
             width: 350,

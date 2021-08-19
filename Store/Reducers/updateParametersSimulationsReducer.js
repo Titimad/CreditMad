@@ -1,15 +1,6 @@
 // Store/Reducers/updateParametersSimulationsReducer.js
 
-const initialState = {
-  loadedParameter: 0,
-  Type: 'Initial',
-  Amount: 0,
-  Term: 0,
-  InterestRate: 0,
-  MonthlyPayment: 0,
-  TotalPayment: 0,
-  TotalInterest: 0,
-};
+const initialState = {};
 
 function updatedParametersSimulation(state = initialState, action) {
   let nextState;

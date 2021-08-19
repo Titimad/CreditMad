@@ -1,6 +1,7 @@
-export default data = [
+export default backup = [
   {
-    Type: 'MonthlyPayment_1',
+    key: '0',
+    text: 'MonthlyPayment_1',
     Amount: 3000,
     Term: 60,
     InterestRate: 5,
@@ -9,7 +10,8 @@ export default data = [
     TotalInterest: 396.82,
   },
   {
-    Type: 'MonthlyPayment_2',
+    key: '1',
+    text: 'MonthlyPayment_2',
     Amount: 15000,
     Term: 36,
     InterestRate: 4,
@@ -18,7 +20,8 @@ export default data = [
     TotalInterest: 942.95,
   },
   {
-    Type: 'MonthlyPayment_3',
+    key: '2',
+    text: 'MonthlyPayment_3',
     Amount: 200,
     Term: 12,
     InterestRate: 2,

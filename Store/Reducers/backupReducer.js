@@ -16,6 +16,16 @@ function record(state = initialState, action) {
           nextState.backupSimulation,
       );
       return nextState || state;
+    case 'DELETE_SIMULATION':
+      nextState = {
+        backupSimulation: action.value,
+        numberOfSimulation: numberOfSimulation - 1,
+      };
+      console.log(
+        'Contenu du State global partiel backupSimulation:' +
+          nextState.backupSimulation,
+      );
+      return nextState || state;
     default:
       return state;
   }

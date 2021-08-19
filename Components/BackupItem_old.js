@@ -1,7 +1,7 @@
 // Components/BackupItem.js
 
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import MonthlyPayment from './MonthlyPayment';
 import {connect} from 'react-redux';
 
@@ -10,14 +10,9 @@ const mapStateToProps = state => {
 };
 
 class BackupItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const backUp = this.props.backUp;
     const loadBackup = this.props.loadBackup;
-    const index = this.props.index;
-
     console.log('Props de BackupItem');
     console.log(this.props);
     return (
