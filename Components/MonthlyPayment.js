@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, TextInput, Button, Text} from 'react-native';
+import {StyleSheet, View, TextInput, Pressable, Text} from 'react-native';
 import numeral from 'numeral';
 
 import {PieChart} from 'react-native-chart-kit';
@@ -75,8 +75,6 @@ class MonthlyPayment extends React.Component {
       this.totalInterest =
         Math.round((this.totalPayments - this.amount) * 100) / 100;
       this.monthlyPayment = Math.round(this.monthlyPayment * 100) / 100;
-      interest = this.totalInterest;
-      amount = this.amount;
       dataPieChart[0].value = this.totalInterest;
       dataPieChart[1].value = this.amount;
       this.forceUpdate();
@@ -221,7 +219,17 @@ class MonthlyPayment extends React.Component {
                 placeholder={(this.interestRate * 100).toString()}
                 onChangeText={text => this._interestRateInputChanged(text)}
               />
-              <Text style={{flex: 1, alignItems: 'flex-end'}}>%</Text>
+              <Text
+                style={{
+                  flex: 1,
+                  alignItems: 'flex-end',
+                  color: 'dimgrey',
+                  fontSize: 14,
+                  fontFamily: 'Helvetica',
+                  fontWeight: 'bold',
+                }}>
+                %
+              </Text>
             </View>
           </View>
         </View>
@@ -298,12 +306,27 @@ class MonthlyPayment extends React.Component {
             justifyContent: 'center',
             marginBottom: 10,
           }}>
-          <Button
+          <Pressable
+            style={{
+              backgroundColor: 'maroon',
+              borderRadius: 10,
+              justifyContent: 'center',
+              marginBottom: 10,
+            }}
             onPress={() => this._backup()}
-            title="Sauvegarder la simulation"
-            color="blue"
-            accessibilityLabel="Sauvegarder la simulation"
-          />
+            color="maroon">
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 20,
+                fontFamily: 'Helvetica',
+                fontWeight: 'bold',
+                marginLeft: 10,
+                marginRight: 10,
+              }}>
+              Sauvegarder la simulation
+            </Text>
+          </Pressable>
         </View>
       </View>
     );
@@ -328,16 +351,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: 'black',
+    color: 'dimgrey',
     fontSize: 14,
     fontFamily: 'Helvetica',
     marginLeft: 10,
+    fontWeight: 'bold',
   },
   textResult: {
-    color: 'black',
-    fontSize: 14,
+    color: 'dimgrey',
+    fontSize: 16,
     fontFamily: 'Helvetica',
     marginLeft: 10,
+    fontWeight: 'bold',
   },
   input: {
     color: 'black',
@@ -346,6 +371,7 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 12,
     borderWidth: 1,
+    borderRadius: 10,
   },
 });
 export default connect(mapStateToProps)(MonthlyPayment);

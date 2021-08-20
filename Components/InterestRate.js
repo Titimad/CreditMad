@@ -1,14 +1,29 @@
 import React from 'react';
-import {StyleSheet, View, TextInput, Button, Text} from 'react-native';
+import {StyleSheet, View, TextInput, Pressable, Text} from 'react-native';
 import numeral from 'numeral';
 
 import {PieChart} from 'react-native-chart-kit';
+
 import {Dimensions} from 'react-native';
 
 import {connect} from 'react-redux';
 
-var interest = 0;
-var amount = 0;
+var dataPieChart = [
+  {
+    name: 'Intérêts',
+    value: 0,
+    color: 'red',
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  },
+  {
+    name: 'Capital',
+    value: 0,
+    color: 'green',
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  },
+];
 
 const screenWidth = Dimensions.get('window').width;
 const chartConfig = {
@@ -19,26 +34,15 @@ const mapStateToProps = state => {
   return state;
 };
 
-class InterestRate extends React.Component {
+class MonthlyPayment extends React.Component {
   constructor(props) {
     super(props);
-
-    console.log(
-      'Les props du Component MonthlyPayment avant test loadedParameter sont:',
-    );
-    console.log(this.props);
-
     this.amount = 0;
     this.term = 0;
     this.interestRate = 0;
     this.monthlyPayment = 0;
     this.totalPayments = 0;
     this.totalInterest = 0;
-
-    console.log(
-      'Les props du Component MonthlyPayment après test loadedParameter sont:',
-    );
-    console.log(this.props);
   }
 
   componentDidMount() {
@@ -52,52 +56,39 @@ class InterestRate extends React.Component {
     console.log(this.props);
   }
   _calculate() {
-    console.log('Données avant calcul');
-    console.log(this.amount);
-    console.log(this.term);
-    console.log(this.interestRate);
-
     //Calcul seulement si la durée est saisie
     if (this.term != 0) {
-      //Calcul différent si le taux d'intérêt est nul
-      if (this.interestRate != 0) {
-        this.monthlyPayment =
-          (this.amount * this.interestRate) /
-          12 /
-          (1 - Math.pow(1 + this.interestRate / 12, -this.term));
-        console.log('Mensualité: ' + this.monthlyPayment);
-      } else {
-        this.monthlyPayment = this.amount / this.term;
-        console.log('Mensualité: ' + this.monthlyPayment);
-      }
-
+      console.log('this.amount = ' + this.amount);
+      console.log('this.term = ' + this.term);
+      console.log('this.interestRate = ' + this.interestRate);
+      console.log('this.monthlyPayment = ' + this.monthlyPayment);
+      console.log('this.totalPayments = ' + this.totalPayments);
+      console.log('this.interestRate = ' + this.interestRate);
+      this.interestRate =
+        100 *
+        (this.term *
+          (Math.pow(
+            this.totalPayments / this.amount,
+            1 / ((this.term * this.term) / 12),
+          ) -
+            1));
       this.totalPayments =
         Math.round(this.monthlyPayment * this.term * 100) / 100;
       this.totalInterest =
         Math.round((this.totalPayments - this.amount) * 100) / 100;
-      this.monthlyPayment = Math.round(this.monthlyPayment * 100) / 100;
-      interest = this.totalInterest;
-      console.log('Var interest: ' + interest);
-      amount = this.amount;
-      console.log('Var amount: ' + amount);
-      console.log('Données après calcul');
-      console.log(this.amount);
-      console.log(this.term);
-      console.log(this.interestRate);
-      console.log(this.monthlyPayment);
-      console.log(this.totalPayments);
-      console.log(this.totalInterest);
+
+      dataPieChart[0].value = this.totalInterest;
+      dataPieChart[1].value = this.amount;
       this.forceUpdate();
     } else {
       this.monthlyPayment = 0;
       this.totalPayments = 0;
       this.totalInterest = 0;
-      interest = this.totalInterest;
-      console.log('Var interest: ' + interest);
-      amount = this.amount;
-      console.log('Var amount: ' + amount);
+      dataPieChart[0].value = this.totalInterest;
+      dataPieChart[1].value = this.amount;
       this.forceUpdate();
     }
+    console.log('Props après Calculate:' + this.props);
   }
   _amountInputChanged(text) {
     //Remplacer la virgule par un point
@@ -105,7 +96,8 @@ class InterestRate extends React.Component {
     if (index !== -1) {
       text = text.replace(',', '.');
     }
-    this.amount = text; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
+    this.amount = parseFloat(text); // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
+    dataPieChart[1].value = this.amount;
     this._calculate();
     console.log('Amount: ' + text);
   }
@@ -115,30 +107,29 @@ class InterestRate extends React.Component {
     if (index !== -1) {
       text = text.replace(',', '.');
     }
-    this.term = text; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
+    this.term = parseFloat(text); // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
     this._calculate();
-    console.log('Durée: ' + text);
   }
-  _interestRateInputChanged(text) {
+  _monthlyPaymentInputChanged(text) {
     //Remplacer la virgule par un point
     var index = text.indexOf(',');
     if (index !== -1) {
       text = text.replace(',', '.');
     }
-    this.interestRate = text / 100; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
+    this.monthlyPayment = parseFloat(text); // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
     this._calculate();
-    console.log("Taux d'intérêt: " + text);
   }
   _backup() {
-    let nextNumberOfSimulation = this.props.record.numberOfSimulation + 1;
-    let nameOfSimulation = 'Mensualité ' + nextNumberOfSimulation;
+    let nextIdSimulation = this.props.record.numberOfSimulation;
+    let idSimulation = '' + nextIdSimulation;
     const action = {
       type: 'BACKUP_SIMULATION',
       value: {
-        Type: nameOfSimulation,
+        key: idSimulation,
+        Type: "Taux d'intérêt",
         Amount: this.amount,
         Term: this.term,
-        InterestRate: this.interestRate,
+        InterestRate: this.interestRate * 100,
         MonthlyPayment: this.monthlyPayment,
         TotalPayment: this.totalPayments,
         TotalInterest: this.totalInterest,
@@ -148,8 +139,6 @@ class InterestRate extends React.Component {
     this.props.dispatch(action);
   }
   render() {
-    console.log('Props de MonthlyPayment dans le RENDER:');
-    console.log(this.props);
     if (this.props.updatedParametersSimulation.loadedParameter == 1) {
       console.log('loadedParameter RENDER = 1');
       this.textInputAmount.clear();
@@ -184,7 +173,7 @@ class InterestRate extends React.Component {
             }}>
             <Text style={styles.text}>Montant du prêt</Text>
             <Text style={styles.text}>Durée en mois</Text>
-            <Text style={styles.text}>Taux d'intérêt</Text>
+            <Text style={styles.text}>Mensualité</Text>
           </View>
           <View
             style={{
@@ -225,15 +214,14 @@ class InterestRate extends React.Component {
               }}>
               <TextInput
                 ref={input => {
-                  this.textInputInterestRate = input;
+                  this.textInputMonthlyPayment = input;
                 }}
                 style={[styles.input, {flex: 4}]}
                 keyboardType="decimal-pad"
                 returnKeyType={'done'}
-                placeholder={(this.interestRate * 100).toString()}
-                onChangeText={text => this._interestRateInputChanged(text)}
+                placeholder={this.monthlyPayment.toString()}
+                onChangeText={text => this._monthlyPaymentInputChanged(text)}
               />
-              <Text style={{flex: 1, alignItems: 'flex-end'}}>%</Text>
             </View>
           </View>
         </View>
@@ -247,9 +235,9 @@ class InterestRate extends React.Component {
               alignItems: 'center',
             },
           ]}>
-          <Text style={styles.textResult}>Mensualité</Text>
+          <Text style={styles.textResult}>Taux d'intérêt</Text>
           <Text style={styles.textResult}>
-            {numeral(this.monthlyPayment).format('0.00')}
+            {numeral(this.interestRate).format('0.00') + ' %'}
           </Text>
         </View>
         <View
@@ -285,29 +273,14 @@ class InterestRate extends React.Component {
         </View>
         <View
           style={{
-            flex: 4,
+            flex: 8,
             paddingVertical: 0,
             flexDirection: 'row',
             width: 350,
             justifyContent: 'space-between',
           }}>
           <PieChart
-            data={[
-              {
-                name: 'Intérêts',
-                value: this.totalInterest,
-                color: 'red',
-                legendFontColor: '#7F7F7F',
-                legendFontSize: 15,
-              },
-              {
-                name: 'Capital',
-                value: this.amount,
-                color: 'green',
-                legendFontColor: '#7F7F7F',
-                legendFontSize: 15,
-              },
-            ]}
+            data={dataPieChart}
             width={screenWidth}
             height={260}
             chartConfig={chartConfig}
@@ -325,12 +298,27 @@ class InterestRate extends React.Component {
             justifyContent: 'center',
             marginBottom: 10,
           }}>
-          <Button
+          <Pressable
+            style={{
+              backgroundColor: 'maroon',
+              borderRadius: 10,
+              justifyContent: 'center',
+              marginBottom: 10,
+            }}
             onPress={() => this._backup()}
-            title="Sauvegarder la simulation"
-            color="blue"
-            accessibilityLabel="Sauvegarder la simulation"
-          />
+            color="maroon">
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 20,
+                fontFamily: 'Helvetica',
+                fontWeight: 'bold',
+                marginLeft: 10,
+                marginRight: 10,
+              }}>
+              Sauvegarder la simulation
+            </Text>
+          </Pressable>
         </View>
       </View>
     );
@@ -355,16 +343,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: 'black',
+    color: 'dimgrey',
     fontSize: 14,
     fontFamily: 'Helvetica',
     marginLeft: 10,
+    fontWeight: 'bold',
   },
   textResult: {
-    color: 'black',
-    fontSize: 14,
+    color: 'dimgrey',
+    fontSize: 16,
     fontFamily: 'Helvetica',
     marginLeft: 10,
+    fontWeight: 'bold',
   },
   input: {
     color: 'black',
@@ -373,6 +363,7 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 12,
     borderWidth: 1,
+    borderRadius: 10,
   },
 });
-export default connect(mapStateToProps)(InterestRate);
+export default connect(mapStateToProps)(MonthlyPayment);

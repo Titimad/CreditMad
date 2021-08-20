@@ -1,21 +1,40 @@
 import React from 'react';
-import {StyleSheet, View, TextInput, Button, Text} from 'react-native';
+import {StyleSheet, View, TextInput, Pressable, Text} from 'react-native';
 import numeral from 'numeral';
 
 import {PieChart} from 'react-native-chart-kit';
+
 import {Dimensions} from 'react-native';
 
-var interest = 0;
-var amount = 0;
+import {connect} from 'react-redux';
+
+var dataPieChart = [
+  {
+    name: 'Intérêts',
+    value: 0,
+    color: 'red',
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  },
+  {
+    name: 'Capital',
+    value: 0,
+    color: 'green',
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  },
+];
 
 const screenWidth = Dimensions.get('window').width;
 const chartConfig = {
-  backgroundGradientFrom: '#1E2923',
-  backgroundGradientTo: '#08130D',
   color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
 };
 
-class MonthlyPayment extends React.Component {
+const mapStateToProps = state => {
+  return state;
+};
+
+class Amount extends React.Component {
   constructor(props) {
     super(props);
     this.amount = 0;
@@ -26,18 +45,31 @@ class MonthlyPayment extends React.Component {
     this.totalInterest = 0;
   }
 
+  componentDidMount() {
+    console.log('Le component MonthlyPayment est monté');
+    console.log('Le state global est:');
+    console.log(this.props);
+  }
+  componentDidUpdate() {
+    console.log('Le component MonthlyPayment a été mis à jour');
+    console.log('Le state global est:');
+    console.log(this.props);
+  }
   _calculate() {
     //Calcul seulement si la durée est saisie
     if (this.term != 0) {
       //Calcul différent si le taux d'intérêt est nul
       if (this.interestRate != 0) {
-        this.monthlyPayment =
-          (this.amount * this.interestRate) /
-          12 /
-          (1 - Math.pow(1 + this.interestRate / 12, -this.term));
+        this.amount =
+          Math.round(
+            (100 *
+              (this.monthlyPayment *
+                (1 - Math.pow(1 + this.interestRate / 12, -this.term)))) /
+              (this.interestRate / 12),
+          ) / 100;
         console.log('Mensualité: ' + this.monthlyPayment);
       } else {
-        this.monthlyPayment = this.amount / this.term;
+        this.amount = this.monthlyPayment * this.term;
         console.log('Mensualité: ' + this.monthlyPayment);
       }
 
@@ -46,31 +78,27 @@ class MonthlyPayment extends React.Component {
       this.totalInterest =
         Math.round((this.totalPayments - this.amount) * 100) / 100;
       this.monthlyPayment = Math.round(this.monthlyPayment * 100) / 100;
-      interest = this.totalInterest;
-      console.log('Var interest: ' + interest);
-      amount = this.totalPayments;
-      console.log('Var amount: ' + amount);
+      dataPieChart[0].value = this.totalInterest;
+      dataPieChart[1].value = this.amount;
       this.forceUpdate();
     } else {
-      this.monthlyPayment = 0;
       this.totalPayments = 0;
       this.totalInterest = 0;
-      interest = this.totalInterest;
-      console.log('Var interest: ' + interest);
-      amount = this.totalPayments;
-      console.log('Var amount: ' + amount);
+      this.amount = 0;
+      dataPieChart[0].value = this.totalInterest;
+      dataPieChart[1].value = this.amount;
       this.forceUpdate();
     }
   }
-  _amountInputChanged(text) {
+  _monthlyPaymentInputChanged(text) {
     //Remplacer la virgule par un point
     var index = text.indexOf(',');
     if (index !== -1) {
       text = text.replace(',', '.');
     }
-    this.amount = text; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
+    this.monthlyPayment = parseFloat(text); // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
     this._calculate();
-    console.log('Amount: ' + text);
+    console.log('MonthlyPayment: ' + text);
   }
   _termInputChanged(text) {
     //Remplacer la virgule par un point
@@ -78,9 +106,8 @@ class MonthlyPayment extends React.Component {
     if (index !== -1) {
       text = text.replace(',', '.');
     }
-    this.term = text; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
+    this.term = parseFloat(text); // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
     this._calculate();
-    console.log('Durée: ' + text);
   }
   _interestRateInputChanged(text) {
     //Remplacer la virgule par un point
@@ -88,12 +115,50 @@ class MonthlyPayment extends React.Component {
     if (index !== -1) {
       text = text.replace(',', '.');
     }
-    this.interestRate = text / 100; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
+    this.interestRate = parseFloat(text) / 100; // Modification du texte recherché à chaque saisie de texte, sans passer par le setState comme avant
     this._calculate();
-    console.log("Taux d'intérêt: " + text);
   }
-
+  _backup() {
+    let nextIdSimulation = this.props.record.numberOfSimulation;
+    let idSimulation = '' + nextIdSimulation;
+    const action = {
+      type: 'BACKUP_SIMULATION',
+      value: {
+        key: idSimulation,
+        Type: 'Montant',
+        Amount: this.amount,
+        Term: this.term,
+        InterestRate: this.interestRate * 100,
+        MonthlyPayment: this.monthlyPayment,
+        TotalPayment: this.totalPayments,
+        TotalInterest: this.totalInterest,
+      },
+    };
+    console.log('fonction _backup appelée');
+    this.props.dispatch(action);
+  }
   render() {
+    if (this.props.updatedParametersSimulation.loadedParameter == 1) {
+      console.log('loadedParameter RENDER = 1');
+      this.textInputAmount.clear();
+      this.textInputTerm.clear();
+      this.textInputInterestRate.clear();
+      this.amount = this.props.updatedParametersSimulation.Amount;
+      this.term = this.props.updatedParametersSimulation.Term;
+      this.interestRate =
+        this.props.updatedParametersSimulation.InterestRate / 100;
+      this.monthlyPayment =
+        this.props.updatedParametersSimulation.MonthlyPayment;
+      this.totalPayments = this.props.updatedParametersSimulation.TotalPayment;
+      this.totalInterest = this.props.updatedParametersSimulation.TotalInterest;
+
+      const actionB = {
+        type: 'RESET_LOADED_PARAMETER',
+        value: 0,
+      };
+      this.props.dispatch(actionB);
+      this._calculate();
+    }
     return (
       <View style={styles.container}>
         <View style={styles.inputBox}>
@@ -105,7 +170,7 @@ class MonthlyPayment extends React.Component {
               justifyContent: 'space-around',
               fontSize: 20,
             }}>
-            <Text style={styles.text}>Montant du prêt</Text>
+            <Text style={styles.text}>Mensualité</Text>
             <Text style={styles.text}>Durée en mois</Text>
             <Text style={styles.text}>Taux d'intérêt</Text>
           </View>
@@ -118,19 +183,25 @@ class MonthlyPayment extends React.Component {
             }}>
             <View>
               <TextInput
+                ref={input => {
+                  this.textInputAmount = input;
+                }}
                 style={styles.input}
                 keyboardType="decimal-pad"
                 returnKeyType={'done'}
-                placeholder=""
-                onChangeText={text => this._amountInputChanged(text)}
+                placeholder={this.monthlyPayment.toString()}
+                onChangeText={text => this._monthlyPaymentInputChanged(text)}
               />
             </View>
             <View>
               <TextInput
+                ref={input => {
+                  this.textInputTerm = input;
+                }}
                 style={styles.input}
                 keyboardType="decimal-pad"
                 returnKeyType={'done'}
-                placeholder=""
+                placeholder={this.term.toString()}
                 onChangeText={text => this._termInputChanged(text)}
               />
             </View>
@@ -141,13 +212,26 @@ class MonthlyPayment extends React.Component {
                 alignItems: 'center',
               }}>
               <TextInput
+                ref={input => {
+                  this.textInputInterestRate = input;
+                }}
                 style={[styles.input, {flex: 4}]}
                 keyboardType="decimal-pad"
                 returnKeyType={'done'}
-                placeholder=""
+                placeholder={(this.interestRate * 100).toString()}
                 onChangeText={text => this._interestRateInputChanged(text)}
               />
-              <Text style={{flex: 1, alignItems: 'flex-end'}}>%</Text>
+              <Text
+                style={{
+                  flex: 1,
+                  alignItems: 'flex-end',
+                  color: 'dimgrey',
+                  fontSize: 14,
+                  fontFamily: 'Helvetica',
+                  fontWeight: 'bold',
+                }}>
+                %
+              </Text>
             </View>
           </View>
         </View>
@@ -161,9 +245,9 @@ class MonthlyPayment extends React.Component {
               alignItems: 'center',
             },
           ]}>
-          <Text style={styles.textResult}>Mensualité</Text>
+          <Text style={styles.textResult}>Montant du prêt</Text>
           <Text style={styles.textResult}>
-            {numeral(this.monthlyPayment).format('0.00')}
+            {numeral(this.amount).format('0.00')}
           </Text>
         </View>
         <View
@@ -199,36 +283,52 @@ class MonthlyPayment extends React.Component {
         </View>
         <View
           style={{
-            flex: 4,
+            flex: 8,
             paddingVertical: 0,
             flexDirection: 'row',
             width: 350,
             justifyContent: 'space-between',
           }}>
           <PieChart
-            data={[
-              {
-                name: 'Intérêts',
-                value: interest,
-                color: 'red',
-                legendFontColor: '#7F7F7F',
-                legendFontSize: 15,
-              },
-              {
-                name: 'Capital',
-                value: amount,
-                color: 'green',
-                legendFontColor: '#7F7F7F',
-                legendFontSize: 15,
-              },
-            ]}
+            data={dataPieChart}
             width={screenWidth}
             height={260}
             chartConfig={chartConfig}
             accessor="value"
             backgroundColor="white"
             paddingLeft="15"
+            avoidFalseZero
           />
+        </View>
+        <View
+          style={{
+            flex: 1,
+            paddingVertical: 0,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginBottom: 10,
+          }}>
+          <Pressable
+            style={{
+              backgroundColor: 'maroon',
+              borderRadius: 10,
+              justifyContent: 'center',
+              marginBottom: 10,
+            }}
+            onPress={() => this._backup()}
+            color="maroon">
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 20,
+                fontFamily: 'Helvetica',
+                fontWeight: 'bold',
+                marginLeft: 10,
+                marginRight: 10,
+              }}>
+              Sauvegarder la simulation
+            </Text>
+          </Pressable>
         </View>
       </View>
     );
@@ -253,16 +353,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: 'black',
+    color: 'dimgrey',
     fontSize: 14,
     fontFamily: 'Helvetica',
     marginLeft: 10,
+    fontWeight: 'bold',
   },
   textResult: {
-    color: 'black',
-    fontSize: 14,
+    color: 'dimgrey',
+    fontSize: 16,
     fontFamily: 'Helvetica',
     marginLeft: 10,
+    fontWeight: 'bold',
   },
   input: {
     color: 'black',
@@ -271,6 +373,7 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 12,
     borderWidth: 1,
+    borderRadius: 10,
   },
 });
-export default MonthlyPayment;
+export default connect(mapStateToProps)(Amount);

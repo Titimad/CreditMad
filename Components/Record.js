@@ -6,6 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   TouchableHighlight,
+  ScrollView,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -47,8 +48,9 @@ class Record extends React.Component {
     this.props.dispatch(action);
     console.log('action UPDATE_PARAMETERS_SIMULATION a été appelée');
 
-    this.props.navigation.jumpTo('Mensualité');
+    this.props.navigation.jumpTo(backUpSended.Type);
   }
+
   _swipeList(listData, loadBackup) {
     const closeRow = (rowMap, rowKey) => {
       if (rowMap[rowKey]) {
@@ -80,6 +82,7 @@ class Record extends React.Component {
         onPress={() =>
           loadBackup({
             Amount: data.item.Amount,
+            Type: data.item.Type,
             Term: data.item.Term,
             InterestRate: data.item.InterestRate,
             MonthlyPayment: data.item.MonthlyPayment,
@@ -89,8 +92,25 @@ class Record extends React.Component {
         }
         style={styles.rowFront}
         underlayColor={'#AAA'}>
-        <View>
-          <Text>Simulation n°{data.item.key}</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+          <View>
+            <Text style={styles.text}>{data.item.Type}</Text>
+          </View>
+          <View style={{alignItems: 'flex-end', justifyContent: 'center'}}>
+            <Text style={styles.text_2}>Montant: {data.item.Amount}€</Text>
+            <Text style={styles.text_2}>Durée: {data.item.Term} mois</Text>
+            <Text style={styles.text_2}>
+              Mensualité: {data.item.MonthlyPayment}€
+            </Text>
+            <Text style={styles.text_2}>
+              Taux d'intérêt: {data.item.InterestRate}%
+            </Text>
+          </View>
         </View>
       </TouchableHighlight>
     );
@@ -129,16 +149,6 @@ class Record extends React.Component {
   }
 
   render() {
-    /*    const listData = [
-      {key: '0', text: 'item #0'},
-      {key: '1', text: 'item #1'},
-      {key: '2', text: 'item #2'},
-      {key: '3', text: 'item #3'},
-      {key: '4', text: 'item #4'},
-      {key: '5', text: 'item #5'},
-      {key: '6', text: 'item #6'},
-    ];
-    */
     console.log('Props de Record début de Render:');
     console.log(this.props);
 
@@ -159,14 +169,13 @@ const styles = StyleSheet.create({
   },
   backTextWhite: {
     color: '#FFF',
+    fontWeight: 'bold',
   },
   rowFront: {
-    alignItems: 'center',
-    backgroundColor: '#CCC',
-    borderBottomColor: 'black',
+    backgroundColor: 'blanchedalmond',
+    borderBottomColor: 'dimgrey',
     borderBottomWidth: 1,
-    justifyContent: 'center',
-    height: 50,
+    height: 80,
   },
   rowBack: {
     alignItems: 'center',
@@ -191,6 +200,20 @@ const styles = StyleSheet.create({
   backRightBtnRight: {
     backgroundColor: 'red',
     right: 0,
+  },
+  text: {
+    color: 'dimgrey',
+    fontSize: 16,
+    fontFamily: 'Helvetica',
+    marginLeft: 10,
+    fontWeight: 'bold',
+  },
+  text_2: {
+    color: 'dimgrey',
+    fontSize: 12,
+    fontFamily: 'Helvetica',
+    marginLeft: 10,
+    fontWeight: 'bold',
   },
 });
 

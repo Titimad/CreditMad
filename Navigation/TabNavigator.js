@@ -12,10 +12,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MonthlyPayment from '../Components/MonthlyPayment';
 import InterestRate from '../Components/InterestRate';
 import Term from '../Components/Term';
-import Loan from '../Components/Loan';
-import Record from '../Components/Record';
 import Amount from '../Components/Amount';
-import Basic from '../Components/SwipeList';
+import Record from '../Components/Record';
 
 const mapStateToProps = state => {
   return state;
@@ -29,6 +27,7 @@ const TopTabNavigator = () => {
       initialRouteName="Mensualité"
       screenOptions={{
         tabBarShowIcon: true,
+        tabBarIndicatorStyle: {backgroundColor: 'orange'},
         tabBarScrollEnabled: true,
         tabBarLabelStyle: {
           color: 'white',
@@ -40,7 +39,7 @@ const TopTabNavigator = () => {
           width: 120,
         },
         tabBarStyle: {
-          backgroundColor: 'dodgerblue',
+          backgroundColor: 'yellowgreen',
         },
         swipeEnabled: false,
       }}>
@@ -55,22 +54,8 @@ const TopTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Taux d'intéret"
-        component={InterestRate}
-        options={{
-          tabBarLabel: "Taux d'intéret",
-          tabBarIcon: tabInfo => (
-            <MaterialCommunityIcons
-              name="shape-circle-plus"
-              size={24}
-              color="white"
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Durée"
-        component={Basic}
+        component={Term}
         options={{
           tabBarLabel: 'Durée',
           tabBarIcon: tabInfo => (
@@ -80,7 +65,7 @@ const TopTabNavigator = () => {
       />
       <Tab.Screen
         name="Montant"
-        component={Loan}
+        component={Amount}
         options={{
           tabBarLabel: 'Montant',
           tabBarIcon: tabInfo => (
@@ -107,3 +92,19 @@ const TopTabNavigator = () => {
 };
 
 export default connect(mapStateToProps)(TopTabNavigator);
+/*
+<Tab.Screen
+  name="Taux d'intérêt"
+  component={InterestRate}
+  options={{
+    tabBarLabel: "Taux d'intérêt",
+    tabBarIcon: tabInfo => (
+      <MaterialCommunityIcons
+        name="shape-circle-plus"
+        size={24}
+        color="white"
+      />
+    ),
+  }}
+/>
+*/
